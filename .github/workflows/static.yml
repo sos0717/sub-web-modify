@@ -1,8 +1,9 @@
-# 原文件内容（你贴的那份）只改下面几行
-name: Deploy Vue to Pages          # 名字随意
+# 构建 Vue 并部署到 GitHub Pages
+name: Deploy Vue to Pages
+
 on:
   push:
-    branches: ["master"]           # 或 main
+    branches: ["master"]   # 或 main
   workflow_dispatch:
 
 permissions:
@@ -24,23 +25,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ↓↓↓  以下整块替换原来的「Upload artifact」之前所有步骤 ↓↓↓
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build project
-        run: npm run build
-      # ↑↑↑  构建结束 ↑↑↑
+      - name: Install & Build
+        run: |
+          npm install
+          npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist          # 构建产物目录
+          path: ./dist   # Vue 默认输出目录
 
       - name: Deploy to GitHub Pages
         id: deployment
